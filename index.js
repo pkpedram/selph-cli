@@ -71,14 +71,8 @@ const main = async () => {
                     console.log(log)
                    }
                 })
-             
-
-              
-                // console.log(modules)
-       
-
-            //   return 'ok'
-            // console.log(cp.execSync(command.mainCommand + ' &' +command.execCommand, {stdio: 'inherit'}))
+            
+            console.log(cp.execSync(command.mainCommand + ' &' +command.execCommand, {stdio: 'inherit'}))
             } catch (error) {
                 throw error
             }
