@@ -5,7 +5,9 @@ import cp from 'child_process';
 import chalk from 'chalk';
 import * as url from 'url';
 import path from 'path';
-
+import { selphBG } from 'selph-bg';
+import fs from 'fs-extra'
+import { mkdirp } from 'mkdirp';
 
 const arg = process.argv.slice(2)[0];
 
@@ -31,7 +33,8 @@ const commands = [
         selph: true,
         log: '🟥 Selph - Starting Frontend Application & Backend Server...',
         mainCommand: "cd backend && npm start",
-        execCommand: 'cd frontend &&  npm start && cd ../'
+        execCommand: 'cd frontend &&  npm start && cd ../',
+        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels]
     },
     {
         title: 'start-frontend',
@@ -50,14 +53,32 @@ const commands = [
 ]
 
 const main = async () => {
+    let config = await JSON.parse(fs.readFileSync('selph.config.json'));
 
+    if(config){
     if(commands.map(itm => itm.title).includes(arg)){
+
+          
+        
         let command = commands.find(itm => itm.title == arg);
+
         if(command.selph){
             try {
                 console.log(command.log)
-          
-            console.log(cp.execSync(command.mainCommand + ' &' +command.execCommand, {stdio: 'inherit'}))
+              await  command.functions?.map(async mdl => {
+                    let log = await mdl(config, 'backend/')
+                   if(log){
+                    console.log(log)
+                   }
+                })
+             
+
+              
+                // console.log(modules)
+       
+
+            //   return 'ok'
+            // console.log(cp.execSync(command.mainCommand + ' &' +command.execCommand, {stdio: 'inherit'}))
             } catch (error) {
                 throw error
             }
@@ -68,6 +89,9 @@ const main = async () => {
     }else{
         console.log(chalk.red(`🚫 Sorry, This command (${arg}) is not supported by Selph...`))
     }
+}else{
+    console.log(chalk.red(`🚫 There is no selph config in this directory...`))
+}
 }
 
 await main()
