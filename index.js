@@ -12,7 +12,6 @@ import { mkdirp } from 'mkdirp';
 const arg = process.argv.slice(2)[0];
 
 
-
 const commands = [
     {
         title: 'dev',
@@ -34,7 +33,7 @@ const commands = [
         log: '🟥 Selph - Starting Frontend Application & Backend Server...',
         mainCommand: "cd backend && npm start",
         execCommand: 'cd frontend &&  npm start && cd ../',
-        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels]
+        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg]
     },
     {
         title: 'start-frontend',
