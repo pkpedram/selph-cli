@@ -19,7 +19,7 @@ const commands = [
         selph: true,
         mainCommand: 'cd backend && npm run dev',
         execCommand: 'cd frontend &&  npm start && cd ../',
-        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg]
+        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg, selphBG.genSg]
 
     },
     {
@@ -35,7 +35,7 @@ const commands = [
         log: '🟥 Selph - Starting Frontend Application & Backend Server...',
         mainCommand: "cd backend && npm start",
         execCommand: 'cd frontend &&  npm start && cd ../',
-        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg]
+        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg, selphBG.genSg]
     },
     {
         title: 'start-frontend',
@@ -50,7 +50,7 @@ const commands = [
         log: '🟥 Selph - Starting Backend Server...',
         mainCommand: "cd backend && npm start && cd ../",
         execCommand: '',
-        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg]
+        functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg, selphBG.genSg]
 
     },
 ]
