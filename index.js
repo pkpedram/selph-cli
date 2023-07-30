@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
 import cp from 'child_process';
-
 import chalk from 'chalk';
-import * as url from 'url';
-import path from 'path';
 import { selphBG } from 'selph-bg';
 import fs from 'fs-extra'
-import { mkdirp } from 'mkdirp';
 import open from 'open';
 
 const arg = process.argv.slice(2)[0];
@@ -56,10 +52,10 @@ const commands = [
     },
     {
         title: 'create-admin',
-        selph: true,
+        selph: false,
         log: '🟥 Selph - Creating admin/superuser',
-        mainCommand: "npm run createsuperuser",
-        execCommand: '',
+        mainCommand: "",
+        execCommand: 'cd backend && npm run createsuperuser',
         functions: null
     },
 ]
@@ -104,7 +100,7 @@ const main = async () => {
             }
     
         }else{
-            cp.execSync(command.execCommand, {stdio: 'inherit'});
+            cp.execSync(command.execCommand, {stdio: 'inherit', stdin: "inherit"});
         }
     }else{
         console.log(chalk.red(`🚫 Sorry, This command (${arg}) is not supported by Selph...`))
