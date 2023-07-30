@@ -8,6 +8,7 @@ import path from 'path';
 import { selphBG } from 'selph-bg';
 import fs from 'fs-extra'
 import { mkdirp } from 'mkdirp';
+import open from 'open';
 
 const arg = process.argv.slice(2)[0];
 
@@ -17,8 +18,8 @@ const commands = [
         title: 'dev',
         log: '🟥 Selph - Starting Dev Server...',
         selph: true,
-        mainCommand: 'cd backend && npm run dev',
-        execCommand: 'cd frontend &&  npm start && cd ../',
+        mainCommand: 'cd ../frontend &&  npm start',
+        execCommand: ' npm run dev',
         functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg, selphBG.genSg]
 
     },
@@ -33,8 +34,8 @@ const commands = [
         title: 'start',
         selph: true,
         log: '🟥 Selph - Starting Frontend Application & Backend Server...',
-        mainCommand: "cd backend && npm start",
-        execCommand: 'cd frontend &&  npm start && cd ../',
+        mainCommand: "(cd ../frontend &&  npm start)",
+        execCommand: 'npm start',
         functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg, selphBG.genSg]
     },
     {
@@ -48,13 +49,22 @@ const commands = [
         title: 'start-backend',
         selph: true,
         log: '🟥 Selph - Starting Backend Server...',
-        mainCommand: "cd backend && npm start && cd ../",
+        mainCommand: "npm start",
         execCommand: '',
         functions: [selphBG.genEnv, selphBG.genAppJs, selphBG.genModels, selphBG.genCg, selphBG.genRg, selphBG.genSg]
 
     },
+    {
+        title: 'create-admin',
+        selph: true,
+        log: '🟥 Selph - Creating admin/superuser',
+        mainCommand: "npm run createsuperuser",
+        execCommand: '',
+        functions: null
+    },
 ]
 
+let sh;
 const main = async () => {
     let config = await JSON.parse(fs.readFileSync('selph.config.json'));
 
@@ -74,9 +84,22 @@ const main = async () => {
                     console.log(log)
                    }
                 })
-            
-            console.log(cp.execSync(command.mainCommand + ' &' +command.execCommand, {stdio: 'inherit'}))
+              
+                 sh = cp.exec(command.mainCommand + ' &' +command.execCommand, {
+                    cwd: 'backend'
+                },(error, stdout, stderr) => {
+                    if (error) {
+                        console.error(`An error occurred: `, error);
+                    } else {
+                        console.log(`stdout:`, stdout);
+                        console.log(`stderr:`, stderr);
+                    }
+                })
+                open(`${config?.https ? 'https' : 'http'}://localhost:${config.apiPort}/swagger`)
+                 
             } catch (error) {
+
+                
                 throw error
             }
     
@@ -93,5 +116,6 @@ const main = async () => {
 
 await main()
 
-process.exit()
+
+// process.exit()
 
